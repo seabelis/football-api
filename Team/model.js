@@ -12,7 +12,7 @@ const Team = db.define(
   {
     name: {
       type: Sequelize.STRING,
-      field: 'name'
+      field: 'team_name'
     }
   }
 )
