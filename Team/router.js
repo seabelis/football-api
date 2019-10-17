@@ -24,6 +24,21 @@ router.get('/team', (req, res, next) => {
     .catch(next);
 });
 
+//add a GET /team/:id endpoint that reads a single team. The :id is a route parameter. When a client uses that endpoint, they must replace the :id with the id of team they want to update, like /team/1.
+router.get('/team/:id', (req, res, next) => {
+
+  // The id is attached to the request inside a property named params. The endpoint's route handler should pass the id to Team.findByPk. 
+  Team.findByPk(req.params.id)
+
+  // Send the team instance it finds as the response. 
+    .then(params => {
+      res.send(params);
+    })
+
+    //Pass any caught errors to next.
+    .catch(next);
+});
+
 // Register a POST endpoint for teams in team/router.js. The route should listen for POST requests on the /team route. Pass the request's body to Team.create, which sequelize will use to populate the row's fields.
 router.post('/team', (req, res, next) => {
   console.log ('what is req.body', req.body)
