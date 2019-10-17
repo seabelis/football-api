@@ -1,5 +1,5 @@
 //Import Sequelize.
-const Sequelize = require('sequelize');
+const Sequelize = require('./node_modules/sequelize');
 
 // Import db.js as a constant named db.
 const db = require ('../db')
