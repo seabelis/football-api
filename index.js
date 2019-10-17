@@ -5,7 +5,7 @@ const jsonParser = bodyParser.json()
 const port = process.env.PORT || 4000
 // Import ./team/router as a constant named teamRouter. 
 const teamRouter = require('./team/router');
-const playerModel = require('./player/model');
+const playerRouter = require('./player/router');
 
 
 // You can remove the db and Team imports now, since they are already imported in team/router.js
@@ -15,6 +15,7 @@ const playerModel = require('./player/model');
 app
   .use(jsonParser)
   .use(teamRouter)
+  .use(playerRouter)
   .listen(port, () => {
     console.log(`App is listening on port ${port}`);
   });
