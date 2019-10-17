@@ -10,7 +10,11 @@ const Player = db.define(
   {
     name: {
       type: Sequelize.STRING,
-      number: Sequelize.INTEGER
+      field: 'player_name'
+    },
+    number: {
+      type: Sequelize.INTEGER,
+      field: 'player_number'
     }
   }
 )
