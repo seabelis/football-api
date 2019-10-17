@@ -2,10 +2,10 @@
 const Sequelize = require('sequelize');
 
 // Declare a variable named databaseUrl and set it equal to your local database url, which should be 'postgres://postgres:<password>@localhost:5435/postgres', where <password> should be replaced with the password you've chosen for your database.
-const databaseUrl = 'postgres://postgres:secret@localhost:5435/postgres'
+const databaseUrl = process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5435/postgres'
 
 // Create a new instance of the Sequelize class named db, passing the databaseUrl to the constructor.
-const db = new Sequelize('postgres://postgres:secret@localhost:5435/postgres')
+const db = new Sequelize(databaseUrl)
 
 // Call the sync method of the instance you created. This method will sync the data in your database with the schema you are about to create.
 db
