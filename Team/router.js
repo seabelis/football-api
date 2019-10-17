@@ -25,8 +25,13 @@ router.get('/team', (req, res, next) => {
 });
 
 // Register a POST endpoint for teams in team/router.js. The route should listen for POST requests on the /team route. Pass the request's body to Team.create, which sequelize will use to populate the row's fields.
-// app.post('/team', (req, res) => {
-
+router.post('/team', (req, res, next) => {
+  console.log ('what is req.body', req.body)
+  Team.create(req.body) 
+  //Add a then callback that sends the newly created team as a the response. Add a catch callback where you pass any caught errors to next.
+  .then(team => res.json(team)) 
+  .catch(next)
+});
 
 //Export the router.
 module.exports = router;
