@@ -5,7 +5,7 @@ const port = process.env.PORT || 4000
 const teamRouter = require('./Team/router');
 
 // You can remove the db and Team imports now, since they are already imported in team/router.js
-const db = require ('./db')
+// const db = require ('./db');
 // const Team = require('./team/model');
 
 
