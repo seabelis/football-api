@@ -6,8 +6,10 @@ const cors = require('cors')
 const teamRouter = require('./team/router');
 const playerRouter = require('./player/router');
 const authRouter = require('./server/auth/router');
+const userRouter = require('./user/router')
 const Team = require('./team/model')
 const Player = require('./player/model')
+const User = require('./user/model')
 const db = require('./db')
 const app = express()
 const jsonParser = bodyParser.json()
@@ -26,6 +28,7 @@ app
   .use(teamRouter)
   .use(playerRouter)
   .use(authRouter)
+  .use(userRouter)
   .listen(port, () => {
     console.log(`App is listening on port ${port}`);
   });
