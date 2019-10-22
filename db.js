@@ -1,4 +1,4 @@
-// Import sequelize as a variabled named Sequelize. You should capitalize the variable because it is a class.
+// Import sequelize as a variable named Sequelize. You should capitalize the variable because it is a class.
 const Sequelize = require('sequelize');
 
 // Declare a variable named databaseUrl and set it equal to your local database url, which should be 'postgres://postgres:<password>@localhost:5435/postgres', where <password> should be replaced with the password you've chosen for your database.

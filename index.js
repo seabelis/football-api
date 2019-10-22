@@ -5,6 +5,7 @@ const cors = require('cors')
 // Import ./team/router as a constant named teamRouter. 
 const teamRouter = require('./team/router');
 const playerRouter = require('./player/router');
+const authRouter = require('./server/auth/router');
 const Team = require('./team/model')
 const Player = require('./player/model')
 const db = require('./db')
@@ -24,6 +25,7 @@ app
   .use(corsMiddleware)
   .use(teamRouter)
   .use(playerRouter)
+  .use(authRouter)
   .listen(port, () => {
     console.log(`App is listening on port ${port}`);
   });
