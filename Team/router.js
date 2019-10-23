@@ -7,6 +7,8 @@ const Team = require('./model');
 // Instantiate a router.
 const router = new Router();
 
+const auth = require('../auth/middleware')
+
 //Register a GET endpoint on the '/team' route. This route will get all the team rows from the table.
 //The route handler should take three arguments: the request (or req), the response (or res), and the next function.
 
@@ -40,8 +42,8 @@ router.get('/team/:id', (req, res, next) => {
 });
 
 // Register a POST endpoint for teams in team/router.js. The route should listen for POST requests on the /team route. Pass the request's body to Team.create, which sequelize will use to populate the row's fields.
-router.post('/team', (req, res, next) => {
-  console.log ('what is req.body', req.body)
+router.post('/team', auth, (req, res, next) => {
+  // console.log ('what is req.body', req.body)
   Team.create(req.body) 
   //Add a then callback that sends the newly created team as a the response. Add a catch callback where you pass any caught errors to next.
   .then(team => res.json(team)) 
