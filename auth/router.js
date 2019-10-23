@@ -3,6 +3,7 @@ const { toJWT, toData } = require('./jwt')
 const User = require("../user/model")
 const router = new Router()
 const bcrypt = require("bcrypt");
+const auth = require('./middleware')
 
 
 // Now you will create an POST /login endpoint that allows a user to log in. We want to create a new login resource that contains a JWT.
@@ -74,6 +75,12 @@ router.get('/secret-endpoint', (req, res) => {
       message: 'Please supply some valid credentials'
     })
   }
+})
+
+router.get('/secret-endpoint', auth, (req, res) => {
+  res.send({
+    message: `Thanks for visiting the secret endpoint ${req.user.email}.`,
+  })
 })
 
 module.exports = router
