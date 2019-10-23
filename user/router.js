@@ -10,7 +10,7 @@ router.post("/users", (req, res, next) => {
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 10)
   })
-    // .then(() => res.status(201).send({ message: "User created succesfully" }))
+    .then(() => res.status(201).send({ message: "User created succesfully" }))
     .catch(next);
 });
 

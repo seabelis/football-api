@@ -1,7 +1,9 @@
 const { Router } = require('express')
 const { toJWT, toData } = require('./jwt')
-
+const User = require("../user/model")
 const router = new Router()
+const bcrypt = require("bcrypt");
+
 
 // Now you will create an POST /login endpoint that allows a user to log in. We want to create a new login resource that contains a JWT.
 
@@ -13,9 +15,42 @@ router.post('/login', (req, res) => {
   if(!req.body.email || !req.body.password){
     return res.status(400).send({ message: 'Please give me some credentials, stranger' })
   }
-  return res.send({
-    jwt: toJWT({ userId: 1 })
+  else {
+    // 1. find user based on email address
+    User
+  .findOne({
+    where: {
+      email: req.body.email
+    }
   })
+  .then(entity => {
+    if (!entity) {
+      res.status(400).send({
+        message: 'User with that email does not exist'
+      })
+    }
+
+    // 2. use bcrypt.compareSync to check the password against the stored hash
+    else if (bcrypt.compareSync(req.body.password, entity.password)) {
+
+    // 3. if the password is correct, return a JWT with the userId of the user (user.id)
+    res.send({
+      jwt: toJWT({ userId: entity.id })
+    })
+  }
+  else {
+    res.status(400).send({
+      message: 'Password was incorrect'
+    })
+  }
+})
+.catch(err => {
+  console.error(err)
+  res.status(500).send({
+    message: 'Something went wrong'
+  })
+})
+}
 });
 
 router.get('/secret-endpoint', (req, res) => {
