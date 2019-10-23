@@ -1,10 +1,12 @@
-const { Router } = require('express');
-const User = require('./model');
+const { Router } = require("express");
+const User = require("./model");
+
 const router = new Router();
 
-router.post('/user', (req, res, next) => {
-  User.create(req.body) 
-  .then(user => res.json(user)) 
-  .catch(next)
+router.post("/users", (req, res, next) => {
+  User.create(req.body)
+    .then(() => res.status(201).send({ message: "User created succesfully" }))
+    .catch(next);
 });
-module.exports = router
+
+module.exports = router;

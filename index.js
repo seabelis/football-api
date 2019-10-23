@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 // Import ./team/router as a constant named teamRouter. 
+const jsonParser = bodyParser.json()
+const corsMiddleware = cors()
 const teamRouter = require('./team/router');
 const playerRouter = require('./player/router');
 const authRouter = require('./server/auth/router');
@@ -12,8 +14,7 @@ const Player = require('./player/model')
 const User = require('./user/model')
 const db = require('./db')
 const app = express()
-const jsonParser = bodyParser.json()
-const corsMiddleware = cors()
+
 
 const port = process.env.PORT || 4000
 

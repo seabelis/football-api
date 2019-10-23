@@ -17,6 +17,7 @@ const Player = db.define(
 )
 
 Player.belongsTo(Team)
+Team.hasMany(Player)
 
 //Export the model.
 module.exports = Player
