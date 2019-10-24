@@ -1,18 +1,17 @@
-const Sequelize = require('sequelize')
-const db = require('../db')
+const { Router } = require("express");
+const User = require("./model");
+const bcrypt = require("bcrypt");
 
-const User = db.define('user', {
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-}, {
-  timestamps: false,
-  tableName: 'users'
-})
+const router = new Router();
 
-module.exports = User
+router.post("/users", (req, res, next) => {
+  User.create({
+    email: req.body.email,
+    password: bcrypt.hashSync(req.body.password, 10) // 10 salt is the salt
+  })
+    .then(() => res.status(201).send({ message: "User created succesfully" }))
+    // .then(user => res.status(201).json(user)) // NO!!!11!1! Please.
+    .catch(next);
+});
+
+module.exports = router;
