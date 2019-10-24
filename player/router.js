@@ -1,9 +1,10 @@
 const { Router } = require('express');
 const Player = require('./model');
-const Team = require('../team/model');
+const Team = require('../team/model')
+
 const router = new Router();
 
-router.get('/player', (req, res, next) => {
+router.get('/players', (req, res, next) => {
   Player.findAll()
     .then(players => {
       res.send(players);
@@ -11,22 +12,57 @@ router.get('/player', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/player/:id', (req, res, next) => {
-// Let's help the client by including (or embedding) the team inside the player. Sequelize has built-in features to do just this. All you need to do is modify the GET /player/:id route. You need to add an options object as an argument to the findByPk call. The object needs to have an include property with the value of an array containg the Team model.
-  Player.findByPk(req.params.id, {include: [Team]})
-    .then(params => {
-      res.send(params);
+router.get('/players/:id', (req, res, next) => {
+  Player.findByPk(req.params.id, { include: [ Team ] })
+    .then(player => {
+      res.send(player);
     })
     .catch(next);
 });
 
-router.post('/player', (req, res, next) => {
-  Player.create(req.body) 
-  .then(player => res.json(player)) 
-  .catch(next)
+// // Create a new player account
+router.post("/players", (req, res, next) => {
+  // console.log("WHAT IS REQ.BODY", req.body)
+  Player.create(req.body)
+    .then(player => res.json(player))
+    .catch(next)
 });
 
+router.delete("/players/:playerId", (req, res, next) => {
+  // console.log('WHAT IS REQ.PARAMS before we get wrecked by params', req.params)
+  // res.send('Some people want to watch the world burn') // -> route works
 
+  Player.destroy({
+    where: {
+      id: req.params.playerId,
+    }
+  })
+  .then(numDeleted => {
+    if (numDeleted) {
+      res.status(204).end();
+    } else {
+      res.status(404).end();
+    }
+  })
+  .catch(next);
+});
 
+// router.put("/players/:playerId", (req, res, next) => {
+//   // res.send('oh hi')
+//   // console.log(req.params, 'WRECKED BY PARAMS??')
+//   Player.findByPk(req.params.playerId)
+//     .then(player => {
+//       // console.log("player FOUND?", player)
+//       if (player) {
+//         player
+//           .update(req.body)
+//           .then(player => res.json(player));
+//       } else {
+//         res.status(404).end();
+//       }
+//     })
+//     .catch(next);
+// });
 //Export the router.
+
 module.exports = router;

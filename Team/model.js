@@ -1,8 +1,12 @@
-//Import Sequelize.
 const Sequelize = require('sequelize');
+const db = require('../db');
 
-// Import db.js as a constant named db.
-const db = require ('../db')
+const Team = db.define("team", {
+  name: {
+    type: Sequelize.STRING,
+    field: "name",
+  },
+});
 
 // Declare a constant named Team. Capitalize the variable because it will be a class.
 // Set the variable equal to a call to db.define.

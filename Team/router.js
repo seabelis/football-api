@@ -1,54 +1,74 @@
-// Import the Router class from express.
-const { Router } = require('express');
+const { Router } = require("express");
+const Team = require("./model");
+const Player = require("../player/model");
+const authMiddleWare = require("../auth/middleware");
 
-//Import the Team model class.
-const Team = require('./model');
-
-// Instantiate a router.
 const router = new Router();
 
-const auth = require('../auth/middleware')
-
-//Register a GET endpoint on the '/team' route. This route will get all the team rows from the table.
-//The route handler should take three arguments: the request (or req), the response (or res), and the next function.
-
-router.get('/team', (req, res, next) => {
-
-  // Inside the route handler: Call the Team.findAll method.
+router.get("/teams", (req, res, next) => {
   Team.findAll()
-
-  // Add a then callback. It will receive the list of teams. Send the list as the response.
     .then(teams => {
       res.send(teams);
     })
-
-    // Add a catch callback. It will receive an error if it is thrown. Pass it to next.
     .catch(next);
 });
 
-//add a GET /team/:id endpoint that reads a single team. The :id is a route parameter. When a client uses that endpoint, they must replace the :id with the id of team they want to update, like /team/1.
-router.get('/team/:id', (req, res, next) => {
-
-  // The id is attached to the request inside a property named params. The endpoint's route handler should pass the id to Team.findByPk. 
-  Team.findByPk(req.params.id)
-
-  // Send the team instance it finds as the response. 
-    .then(params => {
-      res.send(params);
+router.get("/teams/:teamId", (req, res, next) => {
+  Team.findByPk(req.params.teamId, { include: [Player] })
+    .then(team => {
+      res.send(team);
     })
-
-    //Pass any caught errors to next.
     .catch(next);
 });
 
-// Register a POST endpoint for teams in team/router.js. The route should listen for POST requests on the /team route. Pass the request's body to Team.create, which sequelize will use to populate the row's fields.
-router.post('/team', auth, (req, res, next) => {
-  // console.log ('what is req.body', req.body)
-  Team.create(req.body) 
-  //Add a then callback that sends the newly created team as a the response. Add a catch callback where you pass any caught errors to next.
-  .then(team => res.json(team)) 
-  .catch(next)
+// Create a new team account
+router.post("/teams", authMiddleWare, (req, res, next) => {
+  console.log("Do we have the user of this request?", req.user);
+  // since this was an authenticated route, we now have req.user
+  // it contains all info about this user (actually req.user is a Sequelize User instance)
+
+  // You can interact with the database record of this user as well:
+  // req.user.update()
+
+  // const userId = req.body.userId // NO!
+  Team.create(req.body)
+    .then(team => res.json(team))
+    .catch(next);
 });
 
+router.delete("/teams/:teamId", (req, res, next) => {
+  // console.log('WHAT IS REQ.PARAMS before we get wrecked by params', req.params)
+  // res.send('Some people want to watch the world burn') // -> route works
+
+  Team.destroy({
+    where: {
+      id: req.params.teamId
+    }
+  })
+    .then(numDeleted => {
+      if (numDeleted) {
+        res.status(204).end();
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch(next);
+});
+
+router.put("/teams/:teamId", (req, res, next) => {
+  // res.send('oh hi')
+  // console.log(req.params, 'WRECKED BY PARAMS??')
+  Team.findByPk(req.params.teamId)
+    .then(team => {
+      console.log("TEAM FOUND?", team);
+      if (team) {
+        team.update(req.body).then(team => res.json(team));
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch(next);
+});
 //Export the router.
+
 module.exports = router;
