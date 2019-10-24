@@ -52,6 +52,3 @@ router.post('/team', auth, (req, res, next) => {
 
 //Export the router.
 module.exports = router;
-
-
-

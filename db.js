@@ -17,5 +17,3 @@ db
 
   // Export db.
   module.exports = db
-
-

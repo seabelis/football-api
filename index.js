@@ -80,5 +80,3 @@ TODO
 - Define the relationships
 - router -> add routes to team router so you can get the players of a team?
 */
-  
-

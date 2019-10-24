@@ -30,6 +30,3 @@ router.post('/player', (req, res, next) => {
 
 //Export the router.
 module.exports = router;
-
-
-
