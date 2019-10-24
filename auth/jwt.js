@@ -11,3 +11,8 @@ function toData(token) {
 }
 
 module.exports = { toJWT, toData }
+
+// let token = toJWT({ userId: 9001 })
+// console.log(token)
+// const whoDis = toData(token)
+// console.log('new phone, who dis', whoDis)
